@@ -1,0 +1,198 @@
+@font-face {
+  font-family: "ABC Areal Semi Mono";
+  src: url("/fonts/ABC%20Areal%20Semi%20Mono/WOFF2/ABCArealSemiMono-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ABC Areal Semi Mono";
+  src: url("/fonts/ABC%20Areal%20Semi%20Mono/WOFF2/ABCArealSemiMono-MediumItalic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --bg: #fcfcfc;
+  --ink: #000000;
+  --accent: #009dff;
+  --font: "ABC Areal Semi Mono", Arial, sans-serif;
+  color-scheme: light;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 500;
+  font-style: normal;
+  text-rendering: geometricPrecision;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+.calendar-screen {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: clamp(1.75rem, 4vh, 2.75rem) 0 clamp(1.25rem, 3vh, 1.75rem);
+}
+
+.wordmark {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(2.15rem, 3.7vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.marquee-band {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin-top: clamp(1.15rem, 2.6vh, 1.85rem);
+}
+
+.rail {
+  height: 1px;
+  background: #171717;
+  flex-shrink: 0;
+}
+
+.marquee-track {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  height: 60px;
+  overflow: hidden;
+}
+
+.marquee-anchor {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.marquee-anchor-end {
+  right: 7vw;
+}
+
+.marquee-anchor-start {
+  left: 4vw;
+}
+
+.marquee {
+  margin: 0;
+  white-space: nowrap;
+  font-size: clamp(1.2rem, 1.9vw, 1.55rem);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1;
+}
+
+.calendar-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(3.25rem, 8vh, 5.25rem);
+  padding-bottom: clamp(2rem, 7vh, 5rem);
+}
+
+.readout {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  column-gap: clamp(5.5rem, 12vw, 12rem);
+  row-gap: 0.28rem;
+  margin: 0;
+  font-size: clamp(1.5rem, 2.56vw, 1.94rem);
+  line-height: 1.42;
+}
+
+.readout dt,
+.readout dd {
+  margin: 0;
+}
+
+.presets {
+  display: grid;
+  width: 90%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-items: center;
+  row-gap: clamp(2.1rem, 5vh, 3.25rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: clamp(1.5rem, 2.56vw, 1.94rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.presets li {
+  white-space: nowrap;
+}
+
+.different-day {
+  align-self: flex-end;
+  margin: 0 clamp(1.25rem, 3vw, 2.25rem) 0 0;
+  color: var(--accent);
+  font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+@media (max-width: 720px) {
+  .marquee-track {
+    height: 46px;
+  }
+
+  .marquee {
+    font-size: clamp(0.95rem, 3.6vw, 1.2rem);
+  }
+
+  .marquee-anchor-end {
+    right: 0.75rem;
+  }
+
+  .marquee-anchor-start {
+    left: 0.75rem;
+  }
+
+  .readout {
+    column-gap: clamp(1.75rem, 8vw, 3.25rem);
+    font-size: clamp(1.15rem, 4.8vw, 1.5rem);
+  }
+
+  .presets {
+    width: 92%;
+    font-size: clamp(1rem, 4.2vw, 1.4rem);
+    row-gap: 1.65rem;
+  }
+}

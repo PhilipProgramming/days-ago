@@ -47,6 +47,11 @@ export function formatCalendar(date: CivilDate): CalendarReadout {
   }
 }
 
+export function accessibleCalendar(date: CivilDate): string {
+  const parts = formatCalendar(date)
+  return `/day ${parts.day}, /month ${parts.month}, /number ${parts.number}, /year ${parts.year}`
+}
+
 export function yesterdaySentence(anchor: CivilDate): string {
   const date = addCalendarDays(anchor, -1)
   const parts = formatCalendar(date)

@@ -5,6 +5,8 @@ import { PresetGrid } from "../components/PresetGrid"
 import { Wordmark } from "../components/Wordmark"
 import { todayLocal, type CivilDate } from "../lib/calendar"
 import { tomorrowSentence, yesterdaySentence } from "../lib/formatDate"
+import { dateForPreset, togglePreset } from "../lib/presets"
+import type { PresetOffset } from "../types"
 
 function sameCivilDate(left: CivilDate, right: CivilDate): boolean {
   return left.year === right.year && left.month === right.month && left.day === right.day
@@ -33,6 +35,12 @@ function useLocalToday(): CivilDate {
 
 export function MainCalendar() {
   const today = useLocalToday()
+  const [selection, setSelection] = useState<PresetOffset | null>(null)
+  const date = dateForPreset(today, selection)
+
+  function choosePreset(offset: PresetOffset) {
+    setSelection((current) => togglePreset(current, offset))
+  }
 
   return (
     <main className="calendar-screen">
@@ -49,8 +57,8 @@ export function MainCalendar() {
         <div className="rail" aria-hidden="true" />
       </div>
       <div className="calendar-stage">
-        <CalendarReadout date={today} />
-        <PresetGrid />
+        <CalendarReadout date={date} />
+        <PresetGrid selected={selection} onSelect={choosePreset} />
       </div>
       <p className="different-day">DIFFERENT DAY</p>
     </main>

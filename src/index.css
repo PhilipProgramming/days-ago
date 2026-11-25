@@ -125,6 +125,23 @@ input {
   padding-bottom: clamp(2rem, 7vh, 5rem);
 }
 
+.readout-block {
+  position: relative;
+}
+
+.readout-value {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 .readout {
   display: grid;
   grid-template-columns: max-content max-content;
@@ -158,6 +175,166 @@ input {
   white-space: nowrap;
 }
 
+.preset-button {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  line-height: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  appearance: none;
+}
+
+.preset-button:focus {
+  outline: none;
+}
+
+.preset-button:focus-visible {
+  outline: 1px solid #171717;
+  outline-offset: 0.4rem;
+}
+
+.selection-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(100% + 2.75rem);
+  height: calc(100% + 2.05rem);
+  transform: translate(-50%, -52%);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.selection-ring path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.7px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw-selection 0.68s cubic-bezier(0.42, 0.08, 0.22, 1) forwards;
+}
+
+
+.flap-row {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0;
+  height: 1.42em;
+  font-family: inherit;
+  font-weight: 500;
+  font-style: normal;
+  font-synthesis: none;
+  vertical-align: top;
+}
+
+.flap-cell {
+  position: relative;
+  display: block;
+  flex: 0 0 0.78em;
+  width: 0.78em;
+  height: 1.42em;
+  border-radius: 0;
+  perspective: 8em;
+  perspective-origin: center;
+  box-shadow: inset -1px 0 0 rgba(23, 23, 23, 0.07);
+}
+
+.flap-face,
+.flap-leaf {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.flap-face-top,
+.flap-leaf-top {
+  top: 0;
+}
+
+.flap-face-bottom,
+.flap-leaf-bottom {
+  top: 50%;
+}
+
+.flap-face-top {
+  background: linear-gradient(#fdfdfd, #f4f4f4);
+}
+
+.flap-face-bottom {
+  background: linear-gradient(#efefef, #fafafa);
+}
+
+.flap-glyph {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: 1.42em;
+  line-height: 1.42;
+  overflow: hidden;
+  white-space: pre;
+  text-align: left;
+}
+
+.flap-glyph-lower {
+  transform: translateY(-50%);
+}
+
+.flap-leaf {
+  z-index: 2;
+  visibility: hidden;
+  background: var(--bg);
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.flap-leaf.is-flipping {
+  visibility: visible;
+}
+
+.flap-leaf-top {
+  transform-origin: center bottom;
+}
+
+.flap-leaf-bottom {
+  z-index: 3;
+  transform-origin: center top;
+}
+
+.flap-seam {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 1px;
+  margin-top: -0.5px;
+  background: rgba(23, 23, 23, 0.18);
+  pointer-events: none;
+}
+
+@keyframes draw-selection {
+  from {
+    stroke-dashoffset: 100;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 .different-day {
   align-self: flex-end;
   margin: 0 clamp(1.25rem, 3vw, 2.25rem) 0 0;
@@ -186,13 +363,20 @@ input {
   }
 
   .readout {
-    column-gap: clamp(1.75rem, 8vw, 3.25rem);
-    font-size: clamp(1.15rem, 4.8vw, 1.5rem);
+    column-gap: clamp(0.85rem, 3.2vw, 1.75rem);
+    font-size: clamp(0.72rem, 3.5vw, 1.28rem);
   }
 
   .presets {
     width: 92%;
     font-size: clamp(1rem, 4.2vw, 1.4rem);
     row-gap: 1.65rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .selection-ring path {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 }

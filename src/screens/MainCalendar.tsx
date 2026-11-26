@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { CalendarReadout } from "../components/CalendarReadout"
 import { ControlPanel } from "../components/ControlPanel"
 import { MarqueeLine } from "../components/MarqueeLine"
 import { Wordmark } from "../components/Wordmark"
-import { todayLocal, type CivilDate } from "../lib/calendar"
+import type { CivilDate } from "../lib/calendar"
 import {
   INITIAL_CONTROL,
   allClear,
@@ -15,35 +15,21 @@ import {
 } from "../lib/controlPanel"
 import { tomorrowSentence, yesterdaySentence } from "../lib/formatDate"
 
-function sameCivilDate(left: CivilDate, right: CivilDate): boolean {
-  return left.year === right.year && left.month === right.month && left.day === right.day
+type MainCalendarProps = {
+  today: CivilDate
+  returnFocus: number
+  onDifferentDay: () => void
 }
 
-function useLocalToday(): CivilDate {
-  const [today, setToday] = useState(() => todayLocal())
-
-  useEffect(() => {
-    const sync = () => {
-      const next = todayLocal()
-      setToday((current) => (sameCivilDate(current, next) ? current : next))
-    }
-
-    const id = window.setInterval(sync, 60_000)
-    document.addEventListener("visibilitychange", sync)
-
-    return () => {
-      window.clearInterval(id)
-      document.removeEventListener("visibilitychange", sync)
-    }
-  }, [])
-
-  return today
-}
-
-export function MainCalendar() {
-  const today = useLocalToday()
+export function MainCalendar({ today, returnFocus, onDifferentDay }: MainCalendarProps) {
+  const differentDayRef = useRef<HTMLButtonElement>(null)
   const [control, setControl] = useState(INITIAL_CONTROL)
   const date = dateForControl(today, control)
+
+  useEffect(() => {
+    if (returnFocus === 0) return
+    differentDayRef.current?.focus({ preventScroll: true })
+  }, [returnFocus])
 
   return (
     <main className="calendar-screen">
@@ -71,7 +57,14 @@ export function MainCalendar() {
           onClearEntry={() => setControl((current) => clearEntry(current))}
         />
       </div>
-      <p className="different-day">DIFFERENT DAY</p>
+      <button
+        ref={differentDayRef}
+        type="button"
+        className="keycap keycap-different different-day"
+        onClick={onDifferentDay}
+      >
+        different day
+      </button>
     </main>
   )
 }

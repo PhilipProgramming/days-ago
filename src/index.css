@@ -58,7 +58,8 @@ input {
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: clamp(1.75rem, 4vh, 2.75rem) 0 clamp(1.25rem, 3vh, 1.75rem);
 }
 
@@ -304,6 +305,42 @@ input {
   font-size: calc(var(--key) * 0.34);
 }
 
+.keycap-different {
+  --face: #7dddc0;
+  --edge-top: #c9f3e8;
+  --edge-left: #a8ead8;
+  --edge-right: #5bb89d;
+  --edge-bottom: #3e9a80;
+  --lip-top: #67c9ad;
+  --lip-left: #8ed9c4;
+  --lip-right: #4eae93;
+  --lip-bottom: #35876f;
+}
+
+.keycap-print {
+  --face: #f8da72;
+  --edge-top: #fbe9a8;
+  --edge-left: #f8e29a;
+  --edge-right: #d4b44a;
+  --edge-bottom: #b8962e;
+  --lip-top: #c9ad55;
+  --lip-left: #e4c86a;
+  --lip-right: #c4a33a;
+  --lip-bottom: #a88a28;
+}
+
+.keycap-escape {
+  --face: #e97968;
+  --edge-top: #f4b0a4;
+  --edge-left: #f09a8c;
+  --edge-right: #c45a4c;
+  --edge-bottom: #a84438;
+  --lip-top: #c46254;
+  --lip-left: #e08a7c;
+  --lip-right: #b85044;
+  --lip-bottom: #8f3b32;
+}
+
 .control-clears .keycap {
   font-size: calc(var(--key) * 0.36);
 }
@@ -429,13 +466,29 @@ input {
 }
 
 .different-day {
+  --key: 2.75rem;
+  flex-shrink: 0;
   align-self: flex-end;
+  width: auto;
+  min-width: 11.25rem;
+  height: 2.75rem;
   margin: 0 clamp(1.25rem, 3vw, 2.25rem) 0 0;
-  color: var(--accent);
+  padding: 0 0.95rem;
   font-size: clamp(0.8rem, 1.2vw, 0.95rem);
-  font-weight: 500;
   letter-spacing: 0.06em;
-  line-height: 1;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 @media (max-width: 720px) {
@@ -477,6 +530,140 @@ input {
     gap: 0.8rem;
     padding-bottom: 0.15rem;
   }
+}
+
+.calculator-screen {
+  width: 100%;
+  min-width: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: clamp(0.7rem, 3vh, 2rem) clamp(0.4rem, 1.6vw, 1.1rem);
+}
+
+.calculator-screen:focus,
+.calculator-screen:focus-visible {
+  outline: none;
+}
+
+.calculator {
+  --gap: clamp(0.32rem, 0.8vw, 0.62rem);
+  --led: clamp(8px, 0.42rem, 14px);
+  --led-gap: 0.38rem;
+  --chrome: calc(var(--led) + var(--led-gap) + var(--gap) * 5);
+  --digit: min(4.5rem, calc((100cqi - var(--chrome)) / 6));
+  --key: var(--digit);
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 48rem);
+  margin-block: auto;
+  font-synthesis: none;
+}
+
+.calculator-top {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--gap);
+  width: 100%;
+  max-width: calc(var(--chrome) + var(--digit) * 6);
+  margin-bottom: calc(var(--gap) * 1.35);
+  padding-left: calc(var(--led) + var(--led-gap));
+}
+
+.calc-recess {
+  border-style: solid;
+  border-width: 5px 4px 4px 4px;
+  border-color: #b6b5af #f3f2ed #f8f7f3 #c8c7c1;
+  background: #e4e3dd;
+  box-shadow: inset 0 0 0 1px #171717;
+}
+
+.calc-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(var(--digit) * 1.02);
+  margin: 0;
+  padding: 0 0.8rem;
+  color: #171717;
+  font-size: clamp(0.95rem, calc(var(--digit) * 0.34), 1.45rem);
+  font-weight: 500;
+  font-synthesis: none;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.printer-housing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(var(--digit) * 0.74);
+  padding: 0.22rem 0.9rem;
+}
+
+.printer-slot {
+  width: 74%;
+  height: min(1.05rem, 62%);
+  background: #171717;
+  border-radius: 0;
+  box-shadow: inset 0 0 0 1px #0c0c0c;
+}
+
+.calculator-pad {
+  display: grid;
+  grid-template-columns: repeat(6, var(--digit));
+  gap: var(--gap);
+  align-items: center;
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  padding-left: calc(var(--led) + var(--led-gap));
+}
+
+.calculator .direction-key {
+  position: relative;
+  min-width: 0;
+}
+
+.calculator .direction-key .led {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + var(--led-gap));
+  transform: translateY(-50%);
+}
+
+.calculator .keycap-square {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  min-width: 0;
+  font-size: calc(var(--digit) * 0.4);
+}
+
+.calculator .keycap-span {
+  width: 100%;
+  height: max(2.75rem, calc(var(--digit) * 0.7));
+  aspect-ratio: auto;
+  font-size: calc(var(--digit) * 0.32);
+}
+
+.calculator .is-action {
+  margin-top: calc(var(--gap) * 0.85);
+}
+
+.calculator .keycap:disabled {
+  color: #171717;
+  opacity: 0.48;
 }
 
 @media (prefers-reduced-motion: reduce) {

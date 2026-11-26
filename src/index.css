@@ -157,71 +157,174 @@ input {
   margin: 0;
 }
 
-.presets {
-  display: grid;
-  width: 90%;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  justify-items: center;
-  row-gap: clamp(2.1rem, 5vh, 3.25rem);
+.control-panel {
+  --key: clamp(2.6rem, 10.8vw, 5.15rem);
+  --number: calc(var(--key) * 1.25);
+  --check-h: calc(var(--key) * 0.65);
+  --side-gap: calc(var(--key) * 0.2);
+  --center-gap: calc(var(--key) * 0.3);
+  --number-gap: calc(var(--key) * 0.39);
+  --check-overhang: calc(var(--key) * 0.17);
+  --group-gap: clamp(0.45rem, calc(var(--key) * 0.58), 3rem);
+  --led: clamp(8px, calc(var(--key) * 0.18), 16px);
+  --led-gap: calc(var(--key) * 0.15);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--group-gap);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: clamp(1.5rem, 2.56vw, 1.94rem);
-  font-weight: 500;
-  line-height: 1.2;
+  padding-inline: clamp(0.35rem, 1.5vw, 0.75rem);
+  font-synthesis: none;
 }
 
-.presets li {
-  white-space: nowrap;
+.control-directions,
+.control-clears {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--side-gap);
 }
 
-.preset-button {
-  position: relative;
-  display: inline-block;
+.direction-key {
+  display: flex;
+  align-items: center;
+  gap: var(--led-gap);
+}
+
+.control-values {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--center-gap);
+  width: calc(var(--number) * 2 + var(--number-gap) + var(--check-overhang) * 2);
+  max-width: 100%;
+}
+
+.number-row {
+  display: flex;
+  gap: var(--number-gap);
+}
+
+.led {
+  flex: 0 0 var(--led);
+  width: var(--led);
+  height: var(--led);
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #4a4e4a, #222522 72%);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.45),
+    0 0 0 1px #171717;
+}
+
+.led.is-lit {
+  background: radial-gradient(circle at 40% 35%, #d7f6c6, #3b9846 46%, #1b682c 78%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.4),
+    0 0 0 1px #171717,
+    0 0 3px rgba(46, 138, 58, 0.5);
+}
+
+.keycap {
+  --face: #f2f1ec;
+  --edge-top: #f8f7f3;
+  --edge-left: #f3f2ed;
+  --edge-right: #d0cfc9;
+  --edge-bottom: #b6b5af;
+  --lip-top: #c8c7c1;
+  --lip-left: #e4e3dd;
+  --lip-right: #c2c1bb;
+  --lip-bottom: #aeada7;
+  --cap-top: clamp(3px, calc(var(--key) * 0.085), 7px);
+  --cap-side: clamp(3px, calc(var(--key) * 0.08), 7px);
+  --cap-bottom: clamp(4px, calc(var(--key) * 0.12), 10px);
+  --cap-drop: clamp(1px, calc(var(--key) * 0.04), 3px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--key);
+  height: var(--key);
   margin: 0;
   padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
+  border-style: solid;
+  border-width: var(--cap-top) var(--cap-side) var(--cap-bottom) var(--cap-side);
+  border-color: var(--edge-top) var(--edge-right) var(--edge-bottom) var(--edge-left);
+  border-radius: 0;
+  background: var(--face);
+  color: #171717;
+  box-shadow:
+    0 0 0 1px #171717,
+    0 var(--cap-drop) calc(var(--key) * 0.018) rgba(23, 23, 23, 0.18);
+  font-family: inherit;
+  font-size: calc(var(--key) * 0.4);
   font-weight: 500;
-  line-height: inherit;
-  letter-spacing: inherit;
+  font-style: normal;
+  font-synthesis: none;
+  line-height: 1;
+  letter-spacing: 0;
   white-space: nowrap;
   cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
   appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    border-width 80ms linear,
+    border-color 80ms linear,
+    box-shadow 80ms linear;
 }
 
-.preset-button:focus {
+.keycap-number,
+.keycap-check {
+  --face: #c8d1da;
+  --edge-top: #e6eaee;
+  --edge-left: #d5dce3;
+  --edge-right: #aeb6be;
+  --edge-bottom: #97a3ac;
+  --lip-top: #8f9aa4;
+  --lip-left: #c5ced6;
+  --lip-right: #9aa6b0;
+  --lip-bottom: #87939d;
+}
+
+.keycap-number {
+  width: var(--number);
+  height: var(--number);
+  font-size: calc(var(--number) * 0.4);
+}
+
+.keycap-check {
+  width: 100%;
+  height: var(--check-h);
+  font-size: calc(var(--key) * 0.34);
+}
+
+.control-clears .keycap {
+  font-size: calc(var(--key) * 0.36);
+}
+
+.keycap[aria-pressed="true"],
+.keycap:active {
+  --cap-top: clamp(2px, calc(var(--key) * 0.04), 4px);
+  --cap-side: clamp(2px, calc(var(--key) * 0.045), 4px);
+  --cap-bottom: clamp(2px, calc(var(--key) * 0.05), 4px);
+  --cap-drop: 0px;
+  border-color: var(--lip-top) var(--lip-right) var(--lip-bottom) var(--lip-left);
+  box-shadow: 0 0 0 1px #171717;
+}
+
+.keycap:focus {
   outline: none;
 }
 
-.preset-button:focus-visible {
+.keycap:focus-visible {
   outline: 1px solid #171717;
-  outline-offset: 0.4rem;
-}
-
-.selection-ring {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: calc(100% + 2.75rem);
-  height: calc(100% + 2.05rem);
-  transform: translate(-50%, -52%);
-  overflow: visible;
-  pointer-events: none;
-}
-
-.selection-ring path {
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 1.7px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation: draw-selection 0.68s cubic-bezier(0.42, 0.08, 0.22, 1) forwards;
+  outline-offset: 0.28rem;
 }
 
 
@@ -325,16 +428,6 @@ input {
   pointer-events: none;
 }
 
-@keyframes draw-selection {
-  from {
-    stroke-dashoffset: 100;
-  }
-
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
 .different-day {
   align-self: flex-end;
   margin: 0 clamp(1.25rem, 3vw, 2.25rem) 0 0;
@@ -366,17 +459,28 @@ input {
     column-gap: clamp(0.85rem, 3.2vw, 1.75rem);
     font-size: clamp(0.72rem, 3.5vw, 1.28rem);
   }
+}
 
-  .presets {
-    width: 92%;
-    font-size: clamp(1rem, 4.2vw, 1.4rem);
-    row-gap: 1.65rem;
+@media (max-height: 700px) and (min-width: 760px) {
+  .calendar-screen {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: 0.7rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .marquee-band {
+    margin-top: 0.55rem;
+  }
+
+  .calendar-stage {
+    gap: 0.8rem;
+    padding-bottom: 0.15rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .selection-ring path {
-    animation: none;
-    stroke-dashoffset: 0;
+  .keycap {
+    transition: none;
   }
 }

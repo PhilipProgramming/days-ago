@@ -1,11 +1,5 @@
 import { describe, expect, it } from "vitest"
-import {
-  accessibleCalendar,
-  formatCalendar,
-  formatPreset,
-  tomorrowSentence,
-  yesterdaySentence,
-} from "./formatDate"
+import { accessibleCalendar, formatCalendar, tomorrowSentence, yesterdaySentence } from "./formatDate"
 
 describe("formatCalendar", () => {
   it("spells Tuesday 24 November 2026 in lowercase", () => {
@@ -53,16 +47,5 @@ describe("accessibleCalendar", () => {
     expect(after).toBe("/day wednesday, /month november, /number twenty-five, /year twenty twenty-six")
     expect(after).not.toBe(before)
     expect(after).not.toContain("tuesday")
-  })
-})
-
-describe("formatPreset", () => {
-  it("keeps the mockup signs on each preset", () => {
-    expect(formatPreset(-30)).toBe("-30 days")
-    expect(formatPreset(-90)).toBe("-90 days")
-    expect(formatPreset(-120)).toBe("-120 days")
-    expect(formatPreset(30)).toBe("+30 days")
-    expect(formatPreset(90)).toBe("+90 days")
-    expect(formatPreset(120)).toBe("+120 days")
   })
 })

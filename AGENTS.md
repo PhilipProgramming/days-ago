@@ -15,7 +15,7 @@ Days Ago is a single-page calendar experiment. The interface is typographic, ful
 
 - React, TypeScript, and Vite. Motion uses native CSS, SVG, and the Web Animations API.
 - Production dependencies stay at React and React DOM. Vitest is the test dependency. Do not add a router, date library, animation library, backend, database, authentication, or external API.
-- The URL stays `/`. Screens will switch in React state. The custom and result screens are not mounted yet.
+- The URL stays `/`. Screens switch in React state. The custom calculator is the second screen. Receipt rendering and the result sequence are not mounted yet.
 - Pure date functions take an explicit civil date `{ year, month, day }`. The clock is read only in the UI.
 - Calendar offsets use local `setDate`, so month length, leap day, and daylight saving change the calendar date rather than a 24-hour span.
 - Supported results are years 1000 through 9999.
@@ -40,7 +40,10 @@ Apply the same words on every screen:
 - Utility and direction keycaps are warm off-white. Numerical and check keycaps are muted blue-grey. Each keycap keeps a square outer edge, an inset top face, and four shallow sloping surfaces: lighter on the top and left, darker on the right, and slightly deeper on the bottom. A raised key has a 1px edge and a short contact shadow. A selected or held key does not move; it compresses those slopes and drops the shadow. That change takes 80ms. Reduced motion keeps the compressed shape and skips the transition.
 - Plus selects a future offset and minus a past offset. 30 and 90 select the day count. Direction and count are each mutually exclusive, and choosing one does not move the board. Both LEDs start off, and only the selected direction's LED is lit. Check applies a complete pending selection as a signed number of days from today. An incomplete check does nothing. Checking the offset already shown does not restart the flaps. AC clears the direction, the count, and both LEDs, and restores today. CE clears only the pending count. It leaves the direction, its LED, and the displayed date. The panel starts with every keycap raised.
 - After the result lines leave the viewport, keep `that day would be ...` and the back control. Do not redirect automatically.
-- Custom calculation and the result sequence are not part of the current build.
+- The mint `different day` keycap stays at the lower right of the main calendar. It uses the same keycap construction, and its face is `#7DDDC0`. Activating it opens the custom calculator. Escape returns to the calendar, restores focus to that keycap, and resets the calculator. The calendar keeps its applied date and pending selections.
+- The calculator is a centered instrument. A full-width recessed status display sits above a shorter full-width recessed printer housing. Both align with the outer edges of the keypad. The housing has one wide, horizontally centered dark opening, and that opening stays empty. Below them: plus above minus with one green LED each, digits `1` through `5` and `6` through `0`, then `ac` above `ce` beside wide `print` and `escape` keys. Plus and minus stay recessed while selected. The other keys are momentary. Faces are off-white for direction, AC, and CE; blue-grey for digits; `#F8DA72` for print; `#E97968` for escape.
+- The calculator accepts 1 through 365 calendar days. Digits beyond that limit are rejected and `365 max` appears briefly, then the current entry returns. Leading zeros collapse. Zero alone cannot be printed. AC clears the direction, the digits, both LEDs, and any status message. CE clears only the digits. Print, when a direction and a value from 1 to 365 are both present, stores the signed offset, the reference date, and the resulting civil date, and the display reads `calculated`. Changing the digits or the direction clears that result. The printer slot stays empty. Receipt rendering, paper motion, tearing, transaction numbers, and export are not part of this build.
+- Calculator keys are active only on that screen: digits append, plus and minus choose direction, Backspace removes the last digit, Enter prints a valid entry, and Escape returns. Those shortcuts do not run on the main calendar.
 - Respect `prefers-reduced-motion`: show the resting text and skip travel, flap motion, the keycap compression transition, typewriter, blinking, and automatic departure.
 
 ## Git reporting
@@ -73,9 +76,10 @@ After each commit, report the abbreviated SHA, commit message, branch, push stat
 
 ## Current build
 
-Milestones 1–5 are complete: the Vite application, the date engine and its tests, the main calendar, the mechanical board, and the tactile date-offset panel.
+Milestones 1–6 are complete: the Vite application, the date engine and its tests, the main calendar, the mechanical board, the tactile date-offset panel, and the custom date calculator.
 
 - The six-preset interface is replaced by the seven-button panel described under Implementation restrictions. The offsets are 30 or 90 days before or after today. Pending direction and day count stay separate from the applied offset. Only check, AC, and a later today change the displayed date, and every calculation is measured from today.
-- On a wide viewport shorter than 700px, vertical spacing tightens so the panel and DIFFERENT DAY remain on screen without shrinking the keycaps. The screen can scroll vertically if the content still exceeds the viewport. Narrower layouts keep their own spacing.
+- On a wide viewport shorter than 700px, vertical spacing tightens so the panel and the different day keycap remain on screen without shrinking the keycaps. The calendar screen can scroll vertically when that keycap would otherwise pass the fold. Above 700px the board spacing stays as it was. Narrower layouts keep their own spacing.
 - The calendar is one mechanical board of 4 rows and 27 columns, 108 flaps. Values are left-aligned, and unused slots remain visible blank flaps. A displayed-date change cycles every flap, including unchanged characters and blank slots. A newer selection cancels the sequence still in flight. Reduced motion shows the resting flaps and skips the travel.
-- The marquee rails stay stationary. Custom calculation and the result screens are not implemented yet.
+- The marquee rails stay stationary. `different day` opens the custom calculator described under Implementation restrictions. Calculations use the existing civil-date engine and remain inside 1 through 365 days of the reference date.
+- The recessed printer housing is stacked beneath the status display and stays empty. Receipt rendering, paper extrusion, tearing, background dimming, swipe-to-discard, transaction numbering, PNG export, and native sharing are not implemented yet.

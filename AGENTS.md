@@ -8,7 +8,7 @@ Days Ago is a single-page calendar experiment. The interface is typographic, ful
 - ABC Areal Semi Mono Medium, weight 500, normal style, for the whole interface. Yesterday and tomorrow use the Medium Italic file, not a synthetic italic. Fallback is `Arial, sans-serif`. `font-synthesis: none`.
 - The font package in `public/fonts/` stays uncommitted. Its embedded notice excludes public hosting and redistribution until Dinamo confirms a web license. Production builds omit `dist/fonts`.
 - Preserve the mockups' proportions, alignment, and generous negative space. They are spatial references, not a dashboard.
-- Keep compositions full-viewport. Do not add cards, gradients, shadows, decorative icons, navigation bars, rounded buttons, or generic dashboard styling.
+- Keep compositions full-viewport. Do not add cards, decorative icons, navigation bars, rounded buttons, or generic dashboard styling. Do not add decorative gradients or shadows. The exceptions are the existing subtle mechanical flap shading, the approved keycap sloping surfaces and restrained contact shadows, and the existing LED shading and illumination. These exceptions do not authorize decorative gradients or shadows elsewhere in the interface.
 - Date language is lowercase English. Hyphens belong only inside compound numbers (`twenty-six`). Major groups are separated by spaces (`twenty twenty-six`, `nineteen oh five`).
 
 ## Architecture
@@ -36,10 +36,12 @@ Apply the same words on every screen:
 
 - Each character sits on its own subtle rectangular flap, split by a central hinge. Do not add a dark board, a heavy shadow, or a frame around the board. Labels stay still.
 - Marquee lines sit in two tracks between three stationary 1px `#171717` rails. Yesterday is the upper line and will move left. Tomorrow is the lower line and will move right. Both lines use ABC Areal Semi Mono Medium Italic. Animate the text only. The rails stay fixed, full width, with no vertical borders or track background. Each line must leave the viewport completely before its loop restarts.
-- The six presets are active and always measure from today. Selecting the active preset clears it and returns the calendar to today. The active preset is marked by an animated blue selection circle.
+- The date offset control is a tactile seven-button panel. Its three sections align along their bottom edges. Left: plus above minus, each with one small green LED. Center: 30 and 90 side by side, with a wide lowercase check button beneath them. Right: lowercase ac above lowercase ce. The 120-day presets and the blue selection circle are gone.
+- Utility and direction keycaps are warm off-white. Numerical and check keycaps are muted blue-grey. Each keycap keeps a square outer edge, an inset top face, and four shallow sloping surfaces: lighter on the top and left, darker on the right, and slightly deeper on the bottom. A raised key has a 1px edge and a short contact shadow. A selected or held key does not move; it compresses those slopes and drops the shadow. That change takes 80ms. Reduced motion keeps the compressed shape and skips the transition.
+- Plus selects a future offset and minus a past offset. 30 and 90 select the day count. Direction and count are each mutually exclusive, and choosing one does not move the board. Both LEDs start off, and only the selected direction's LED is lit. Check applies a complete pending selection as a signed number of days from today. An incomplete check does nothing. Checking the offset already shown does not restart the flaps. AC clears the direction, the count, and both LEDs, and restores today. CE clears only the pending count. It leaves the direction, its LED, and the displayed date. The panel starts with every keycap raised.
 - After the result lines leave the viewport, keep `that day would be ...` and the back control. Do not redirect automatically.
 - Custom calculation and the result sequence are not part of the current build.
-- Respect `prefers-reduced-motion`: show the resting text and skip travel, flap motion, typewriter, blinking, and automatic departure.
+- Respect `prefers-reduced-motion`: show the resting text and skip travel, flap motion, the keycap compression transition, typewriter, blinking, and automatic departure.
 
 ## Git reporting
 
@@ -71,8 +73,9 @@ After each commit, report the abbreviated SHA, commit message, branch, push stat
 
 ## Current build
 
-Milestones 1–4 are complete: the Vite application, the date engine and its tests, the main calendar, and the preset-driven mechanical board.
+Milestones 1–5 are complete: the Vite application, the date engine and its tests, the main calendar, the mechanical board, and the tactile date-offset panel.
 
-- The six presets are −30, −90, −120, +30, +90, and +120 days. Each measures from today. Selecting the active preset clears it and returns the calendar to today. The active preset is marked by an animated blue selection circle.
+- The six-preset interface is replaced by the seven-button panel described under Implementation restrictions. The offsets are 30 or 90 days before or after today. Pending direction and day count stay separate from the applied offset. Only check, AC, and a later today change the displayed date, and every calculation is measured from today.
+- On a wide viewport shorter than 700px, vertical spacing tightens so the panel and DIFFERENT DAY remain on screen without shrinking the keycaps. The screen can scroll vertically if the content still exceeds the viewport. Narrower layouts keep their own spacing.
 - The calendar is one mechanical board of 4 rows and 27 columns, 108 flaps. Values are left-aligned, and unused slots remain visible blank flaps. A displayed-date change cycles every flap, including unchanged characters and blank slots. A newer selection cancels the sequence still in flight. Reduced motion shows the resting flaps and skips the travel.
 - The marquee rails stay stationary. Custom calculation and the result screens are not implemented yet.

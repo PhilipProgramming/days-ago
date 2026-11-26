@@ -1,4 +1,3 @@
-import type { PresetOffset } from "../types"
 import { addCalendarDays, type CivilDate } from "./calendar"
 import { spellCardinal, spellOrdinal, spellYear } from "./words"
 
@@ -62,8 +61,4 @@ export function tomorrowSentence(anchor: CivilDate): string {
   const date = addCalendarDays(anchor, 1)
   const parts = formatCalendar(date)
   return `>>> tomorrow will be ${parts.day}, the ${spellOrdinal(date.day)} day of ${parts.month}`
-}
-
-export function formatPreset(offset: PresetOffset): string {
-  return `${offset > 0 ? "+" : ""}${offset} days`
 }
